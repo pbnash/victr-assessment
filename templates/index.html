@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <title>Python Repositories</title>
+  <!-- jQuery and DataTables plug-in CDN downloads -->
+  <script
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous">
+  </script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+  <script type="text/javascript">
+
+      $(document).ready(function(){
+        // Build the table.  See README notes regarding this workaround of making the GET /repos
+        // ajax call outside of the DataTables initialization.
+        $.ajax({
+            url: 'http://localhost:5000/repos',
+            data: { format: 'json' },
+            error: function(e) {
+              alert("Error retrieving repository data: ", e)
+            },
+            dataType: 'json',
+            success: function(rsp_data) {
+              $("#repoTable").DataTable({
+                processing : true,
+                data: rsp_data,
+                "columns" : [
+                     // DB columns stars (6), repo_id(0), name(1), description(2), url(3) created(4), pushed(5)
+                     { data: 6, width: '2px' },
+                     { data: 0, width: '2px' },
+                     { data: 1, width: '12px' },
+                     { data: 2, width: '50px' },
+                     { data: 3, width: '30px' },
+                     { data: 4, width: '2px' },
+                     { data: 5, width: '2px' }
+                 ],
+                 "columnDefs" : [ {
+                          // URL Column:  Convert text content into href link (opens in new tab)
+                          targets: 4,
+                          render : function ( data, type, row, meta) {
+                            return '<a href="' + data + '" target="_blank">' + data + '</a>';
+                          }
+                      },
+
+                      {   // Created/Pushed columns. Tweak iso8601 date strings for readability
+                          targets: [5, 6],
+                          render : function (data, type, row, meta) {
+                              return (data.replace(/[T|Z]/g, ' ') );
+                          }
+                      },
+                 ],
+                // Default sort:  By stars descending, and secondary sort by name ascending
+                 order : [ [0, 'desc'], [2, 'asc'] ],
+              });
+
+            },
+            type: 'GET',
+
+        });
+
+    });
+
+</script>
+</head>
+
+<body>
+  <div id="container">
+     <table id="repoTable" class="display compact cell-border order-column" cellspacing="0" width="80%''">
+       <caption><strong>Most Starred Public Python Github Repositories</strong></br></caption>
+        <thead>
+            <tr>
+                <td>Stars</td>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Description</d>
+                <td>URL</td>
+                <td>Created</td>
+                <td>Last Pushed</td>
+
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+  </div>
+</body>
+</html>
