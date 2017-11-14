@@ -87,9 +87,7 @@ will enable some additional output to track progress on the database initializat
 1000 results can take a while when starting up the application.
 * Performance profiling.  Confirm if the time it takes to do the initial database propulation is within reason.  Can it
   be improved by doing "batch"/executemany updates?
-* Debug/resolve issues with having the DataTables plug-in make the ajax call to retrive the data.  Was getting an error.
-As a workaround, made the ajax call from outside of the DataTables initialization function and passed in the data that
-was retrieved
+* Debug/resolve issues with having the DataTables plug-in make the ajax call to retrive the data.  Was getting a js error regarding an undefined value that does not occur on the workaround ajax call that was added outside of the initial DataTable() call.  Passing the data in via a js variable may be preventing use of some desirable datatables features (like referencing columns by name instead of number).
 *  Full integration as a web app
 
 
