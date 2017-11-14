@@ -31,19 +31,13 @@ well as self-contained styling options (no "standalone" CSS file is needed).
 The SQL database consists of a single table ('repositories').   Based on the JSON "items" structure returned by the 
 GitHub search API (see:  https://developer.github.com/v3/search/#search-repositories ), the following fields are included:
 
-repo_id (int, PRIMARY KEY)  -  JSON "id" value
-
-description (text)          -  JSON "description" value
-
-name (text)                 -  JSON "name" value
-
-url (text)                  -  JSON "html_url" value
-
-created (date)              -  JSON "created_at" value
-
-pushed (date)               -  JSON "pushed_at" value
-
-stars (int)                 -  JSON "stargazers_count" value
+repo_id (int, PRIMARY KEY)  -  JSON "id" value  
+description (text)          -  JSON "description" value  
+name (text)                 -  JSON "name" value  
+url (text)                  -  JSON "html_url" value  
+created (date)              -  JSON "created_at" value  
+pushed (date)               -  JSON "pushed_at" value  
+stars (int)                 -  JSON "stargazers_count" value  
 
 The Flask application (repo_list_app.py)  services two GET requests:  GET / (root), which renders the index.html template, 
 and GET /repos, which is called via ajax from the template script.  GET /repos returns all of the repository information 
@@ -69,18 +63,18 @@ Other standard libraries used:  json, logging, os, requests, sqlite3, sys
 Tested using Chrome on an Ubuntu Linux system.
 
 ## File Descriptions
-config.py    -- contains options for the application, such as the name to use for the SQLite database file and other 
+**config.py**    -- contains options for the application, such as the name to use for the SQLite database file and other 
                 runtime options,are managed here
 
-repo_app_list.py   -  The main (Flask) application
+**repo_app_list.py**   -  The main (Flask) application
 
-templates/, 
-templates/index.html   - the template file that will be rendered.  The templates directory is expected to be located in the 
+**templates/   
+templates/index.html**   - the template file that will be rendered.  The templates directory is expected to be located in the 
                          same directory with the Flask application.
 
 ### Running the program
-This is meant to be invoked directly (python3.6 repo_app_list.py).   It will utilize the port configured in config.py
-(port 5000 by default; URL  http://localhost:5000   in the browser).   The application is not set up (yet) to daemonize.  
+This is meant to be invoked directly (e.g., "python3.6 repo_app_list.py").   It will utilize the port configured in config.py (port 5000 by default; URL  http://localhost:5000  in the browser).   The application is not set up (yet) to daemonize.  
+
 For demonstration purposes, it can just be run in the foreground.  The 'show_messages' option in the config.py file 
 will enable some additional output to track progress on the database initialization.  Additional information is also logged
 (per the configuration options).
@@ -89,7 +83,8 @@ will enable some additional output to track progress on the database initializat
 ### To Do items
 
 * automated unit tests.  The code structure and flow needs improvement/refactoring to make it more easily testable
-* Enhanced logic to allow multiple GitHub requests (up to 10).
+* Enhanced logic to allow multiple GitHub search API requests (up to 10 per minute).  Note, even a single request with
+1000 results can take a while when starting up the application.
 * Performance profiling.  Confirm if the time it takes to do the initial database propulation is within reason.  Can it
   be improved by doing "batch"/executemany updates?
 * Debug/resolve issues with having the DataTables plug-in make the ajax call to retrive the data.  Was getting an error.
@@ -98,7 +93,9 @@ was retrieved
 *  Full integration as a web app
 
 
-
+### Resources
+[datatables.net](http://datatables.net)  
+[jquery.org](http://jquery.org)
 
 
 
