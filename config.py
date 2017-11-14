@@ -19,7 +19,7 @@ class RepoListApp:
         },
         #  Max count/rows for the local database table (repositories).
         #  Must be between 1..1000 (application-imposed max).
-        "max_results" : 20,
+        "max_results" : 1000,
 
         # SQLite DB filename
         "db_name" : "repo_data.db",
